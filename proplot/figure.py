@@ -888,16 +888,16 @@ class Figure(mfigure.Figure):
         """
         Get a renderer at all costs. See matplotlib's tight_layout.py.
         """
-        if self._cachedRenderer:
-            renderer = self._cachedRenderer
+        # if self._cachedRenderer:
+        #     renderer = self._cachedRenderer
+        # else:
+        canvas = self.canvas
+        if canvas and hasattr(canvas, 'get_renderer'):
+            renderer = canvas.get_renderer()
         else:
-            canvas = self.canvas
-            if canvas and hasattr(canvas, 'get_renderer'):
-                renderer = canvas.get_renderer()
-            else:
-                from matplotlib.backends.backend_agg import FigureCanvasAgg
-                canvas = FigureCanvasAgg(self)
-                renderer = canvas.get_renderer()
+            from matplotlib.backends.backend_agg import FigureCanvasAgg
+            canvas = FigureCanvasAgg(self)
+            renderer = canvas.get_renderer()
         return renderer
 
     def _add_axes_panel(self, ax, side=None, **kwargs):
